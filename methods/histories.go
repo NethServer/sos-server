@@ -80,10 +80,10 @@
 
  func GetHistory(c *gin.Context) {
 	 var history models.History
-	 sessionId := c.Param("session_id")
+	 sessionId := c.Param("lk")
 
 	 db := database.Database()
-	 db.Where("session_id = ?", sessionId).First(&history)
+	 db.Where("lk = ?", sessionId).First(&history)
 
 	 if history.Id == 0 {
 		 c.JSON(http.StatusNotFound, gin.H{"message": "No history found!"})
