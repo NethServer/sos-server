@@ -20,12 +20,12 @@
  * author: Edoardo Spadoni <edoardo.spadoni@nethesis.it>
  */
 
-package main
+package models
 
 type Session struct {
-	Id        		uint   		`db:"id" json:"id"`
-	SessionId		string 		`db:"session_id" json:"session"`
-	VpnIp 			string    	`db:"vpn_ip" json:"vpn"`
-	Lk				string 		`db:"lk" json:"lk"`
-	Started			int 		`db:"started" json:"started"`
+	Id				uint		`db:"id" json:"id"`
+	SessionId		string		`db:"session_id" json:"session"`
+	VpnIp			string		`db:"vpn_ip" json:"vpn"`
+	Lk				string		`db:"lk" json:"lk"`
+	Started			string		`db:"started" json:"started"`
 }

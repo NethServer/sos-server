@@ -20,17 +20,19 @@
  * author: Edoardo Spadoni <edoardo.spadoni@nethesis.it>
  */
 
-package main
+package models
 
-import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
-func Database() *gorm.DB {
-	db, err := gorm.Open("mysql", "root:password@tcp(localhost:3306)/sos?charset=utf8")
-	if err != nil {
-		panic(err.Error())
-	}
-	return db
+type History struct {
+	Id						uint		`db:"id" json:"id"`
+	SessionId				string		`db:"session_id" json:"session"`
+	Lk						string		`db:"lk" json:"lk"`
+	Started					string		`db:"started" json:"started"`
+	BytesReceived			string		`db:"bytes_received" json:"bytes_received"`
+	BytesSent				string		`db:"bytes_sent" json:"bytes_sent"`
+	IfconfigPoolLocalIp		string		`db:"ifconfig_pool_local_ip" json:"ifconfig_pool_local_ip"`
+	IfconfigPoolNetmask		string		`db:"ifconfig_pool_netmask" json:"ifconfig_pool_netmask"`
+	IfconfigPoolRemoteIp	string		`db:"ifconfig_pool_remote_ip" json:"ifconfig_pool_remote_ip"`
+	TimeDuration			string		`db:"time_duration" json:"time_duration"`
+	TrustedIp				string		`db:"trusted_ip" json:"trusted_ip"`
+	TrustedPort				string		`db:"trusted_port" json:"trusted_port"`
 }

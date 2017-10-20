@@ -20,34 +20,17 @@
  * author: Edoardo Spadoni <edoardo.spadoni@nethesis.it>
  */
 
-package main
+package database
 
 import (
-	"github.com/gin-gonic/gin"
-
-	"sos-server/methods"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func main() {
-
-	router := gin.Default()
-
-	sessions := router.Group("/api/sessions")
-	{
-		sessions.GET("/", methods.GetSessions)
-		sessions.GET("/:session_id", methods.GetSession)
-		sessions.POST("/", methods.CreateSession)
-		sessions.PUT("/:lk", methods.UpdateSession)
-		sessions.DELETE("/:lk", methods.DeleteSession)
+func Database() *gorm.DB {
+	db, err := gorm.Open("mysql", "root:password@tcp(localhost:3306)/sos?charset=utf8")
+	if err != nil {
+		panic(err.Error())
 	}
-
-	history := router.Group("/api/histories")
-	{
-		history.GET("/", methods.GetHistories)
-		history.GET("/:lk", methods.GetHistory)
-		history.PUT("/:lk", methods.UpdateHistory)
-	}
-
-	router.Run()
-
+	return db
 }
