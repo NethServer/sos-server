@@ -32,18 +32,10 @@ import (
 	"strings"
 )
 
-func InitVPN(sessionId string, lk string) string {
-	out, err := exec.Command("go","version").Output()
-	if err != nil {
-	  fmt.Printf("%s", err)
-	}
-	return strings.TrimSpace(string(out[:]))
-}
-
 func CreateSession(c *gin.Context) {
 	sessionId := c.PostForm("session_id")
 	lk := c.PostForm("lk")
-	vpnIp := InitVPN(sessionId, lk)
+	vpnIp := c.PostForm("vpn_ip")
 	started := int(time.Now().Unix())
 
 	session := Session{
