@@ -32,10 +32,11 @@ func main() {
 
 	v1 := router.Group("/api/sessions")
 	{
-		v1.POST("/", CreateSession)
 		v1.GET("/", GetSessions)
 		v1.GET("/:session_id", GetSession)
-		v1.DELETE("/:session_id", DeleteSession)
+		v1.POST("/", CreateSession)
+		v1.PUT("/:lk", UpdateSession)
+		v1.DELETE("/:lk", DeleteSession)
 	}
 
 	router.Run()

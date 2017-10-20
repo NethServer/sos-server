@@ -23,25 +23,22 @@
 package main
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"net/http"
-	"fmt"
-	"os/exec"
-	"time"
-	"strings"
 )
 
 func CreateSession(c *gin.Context) {
 	sessionId := c.PostForm("session_id")
 	lk := c.PostForm("lk")
-	vpnIp := c.PostForm("vpn_ip")
 	started := int(time.Now().Unix())
 
 	session := Session{
 		Lk: lk,
 		SessionId: sessionId,
-		VpnIp: vpnIp,
+		VpnIp: "",
 		Started: started,
 	}
 
@@ -49,6 +46,23 @@ func CreateSession(c *gin.Context) {
 	db.Save(&session)
 
 	c.JSON(http.StatusCreated, gin.H{"id": session.Id})
+}
+
+func UpdateSession(c *gin.Context) {
+	var session Session
+	lk := c.Param("lk")
+	vpnIp := c.PostForm("vpn_ip")
+
+	db := Database()
+	db.Where("lk = ?", lk).First(&session)
+
+	if session.Id == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"message": "No session found!"})
+		return
+	}
+
+	session.VpnIp = vpnIp
+	db.Save(&session)
 }
 
 func GetSessions(c *gin.Context) {
@@ -82,10 +96,10 @@ func GetSession(c *gin.Context) {
 
 func DeleteSession(c *gin.Context) {
 	var session Session
-	sessionId := c.Param("session_id")
+	lk := c.Param("lk")
 
 	db := Database()
-	db.Where("session_id = ?", sessionId)
+	db.Where("lk = ?", lk).First(&session)
 
 	if session.Id == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "No session found!"})
